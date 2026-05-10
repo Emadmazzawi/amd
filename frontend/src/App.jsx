@@ -11,7 +11,7 @@ function App() {
   const [error, setError] = useState('');
   
   // Settings
-  const [apiUrl, setApiUrl] = useState('http://129.212.186.103:8000/v1/completions');
+  const [apiUrl, setApiUrl] = useState('/api/v1/completions');
   const [temperature, setTemperature] = useState(0.2);
   const [maxTokens, setMaxTokens] = useState(1024);
 
