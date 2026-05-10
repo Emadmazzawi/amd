@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Settings, Play, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { Settings, Play, CheckCircle2, AlertCircle, Loader2, BrainCircuit, ChevronDown } from 'lucide-react';
 import BackgroundBeams from './components/BackgroundBeams';
 import SpotlightCard from './components/SpotlightCard';
 
@@ -49,7 +49,20 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  // Parse Output to separate <think> tags from final response
+  const parseOutput = (text) => {
+    const thinkMatch = text.match(/<think>([\s\S]*?)<\/think>/);
+    if (thinkMatch) {
+      return {
+        thinking: thinkMatch[1].trim(),
+        final: text.replace(/<think>[\s\S]*?<\/think>/, '').trim()
+      };
+    }
+    return { thinking: null, final: text.trim() };
   };
+
+  const [isThinkingExpanded, setIsThinkingExpanded] = useState(false);
+  const parsedOutput = output ? parseOutput(output) : { thinking: null, final: '' };
 
   return (
     <div className="min-h-screen relative font-sans text-foreground overflow-x-hidden selection:bg-accent/30">
@@ -197,7 +210,44 @@ function App() {
                     {error}
                   </div>
                 ) : output ? (
-                  <div className="text-foreground">{output}</div>
+                  <div className="flex flex-col gap-6">
+                    {parsedOutput.thinking && (
+                      <div className="border border-accent/20 bg-accent/5 rounded-lg overflow-hidden">
+                        <button 
+                          onClick={() => setIsThinkingExpanded(!isThinkingExpanded)}
+                          className="w-full flex items-center justify-between p-3 text-xs font-sans text-accent hover:bg-accent/10 transition-colors"
+                        >
+                          <span className="flex items-center gap-2 font-medium">
+                            <BrainCircuit className="w-4 h-4" />
+                            AI Reasoning Process
+                          </span>
+                          <motion.div
+                            animate={{ rotate: isThinkingExpanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown className="w-4 h-4" />
+                          </motion.div>
+                        </button>
+                        
+                        <motion.div
+                          initial={false}
+                          animate={{ 
+                            height: isThinkingExpanded ? 'auto' : 0,
+                            opacity: isThinkingExpanded ? 1 : 0
+                          }}
+                          className="overflow-hidden"
+                        >
+                          <div className="p-4 border-t border-accent/10 text-foreground-muted text-xs leading-relaxed font-mono">
+                            {parsedOutput.thinking}
+                          </div>
+                        </motion.div>
+                      </div>
+                    )}
+                    
+                    <div className="text-foreground">
+                      {parsedOutput.final}
+                    </div>
+                  </div>
                 ) : (
                   <div className="h-full flex items-center justify-center text-foreground-subtle text-center">
                     Awaiting Verilog input...
