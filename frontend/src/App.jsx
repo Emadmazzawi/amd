@@ -24,7 +24,7 @@ function App() {
 
     try {
       // The FastAPI server must be running and allow CORS
-      const prompt = `<|im_start|>system\nYou are an expert VLSI Verification Co-Pilot. Optimize the given Verilog code for synthesis, prevent latches, and fix testbench races.<|im_end|>\n<|im_start|>user\nInstruction: Optimize the following Verilog module for hardware synthesis.\n\nCode:\n${code}<|im_end|>\n<|im_start|>assistant\n`;
+      const prompt = `<|im_start|>system\nYou are an expert VLSI Verification Co-Pilot. Optimize the given Verilog code for synthesis, prevent latches, and fix testbench races. Return ONLY the raw optimized SystemVerilog code without any conversational text, markdown formatting, or explanations.<|im_end|>\n<|im_start|>user\nInstruction: Optimize the following Verilog module for hardware synthesis.\n\nCode:\n${code}<|im_end|>\n<|im_start|>assistant\n`;
 
       const response = await fetch(apiUrl, {
         method: 'POST',
