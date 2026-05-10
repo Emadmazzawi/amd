@@ -60,6 +60,16 @@ function App() {
         final: text.replace(/<think>[\s\S]*?<\/think>/, '').trim()
       };
     }
+    
+    // Fallback for when Max Tokens cuts off the generation before closing </think>
+    if (text.includes('<think>')) {
+      const parts = text.split('<think>');
+      return {
+        thinking: parts[1].trim(),
+        final: parts[0].trim() || '⚠️ Generation cut off by Max Tokens before reaching final output. Increase Max Tokens!'
+      };
+    }
+    
     return { thinking: null, final: text.trim() };
   };
 

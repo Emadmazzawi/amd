@@ -53,7 +53,7 @@ export default function SpotlightCard({ children, className = '' }) {
           background: `radial-gradient(300px circle at ${position.x}px ${position.y}px, rgba(94,106,210,0.15), transparent 40%)`,
         }}
       />
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10 h-full flex flex-col">{children}</div>
       {/* Inner highlight */}
       <div className="absolute inset-0 rounded-2xl shadow-inner-highlight pointer-events-none z-10" />
     </motion.div>
