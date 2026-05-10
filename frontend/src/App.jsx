@@ -49,6 +49,8 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
   // Parse Output to separate <think> tags from final response
   const parseOutput = (text) => {
     const thinkMatch = text.match(/<think>([\s\S]*?)<\/think>/);
