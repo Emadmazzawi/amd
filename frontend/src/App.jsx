@@ -11,6 +11,7 @@ function App() {
   const [error, setError] = useState('');
   
   // Settings
+  const [apiUrl, setApiUrl] = useState('http://129.212.186.103:8000/v1/completions');
   const [temperature, setTemperature] = useState(0.2);
   const [maxTokens, setMaxTokens] = useState(1024);
 
@@ -25,7 +26,7 @@ function App() {
       // The FastAPI server must be running and allow CORS
       const prompt = `<|im_start|>system\nYou are an expert VLSI Verification Co-Pilot. Optimize the given Verilog code for synthesis, prevent latches, and fix testbench races.<|im_end|>\n<|im_start|>user\nInstruction: Optimize the following Verilog module for hardware synthesis.\n\nCode:\n${code}<|im_end|>\n<|im_start|>assistant\n`;
 
-      const response = await fetch('http://localhost:8000/v1/completions', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -97,6 +98,18 @@ function App() {
               </div>
               
               <div className="space-y-6">
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <label className="text-sm text-foreground-muted">Endpoint URL</label>
+                  </div>
+                  <input 
+                    type="text" 
+                    value={apiUrl}
+                    onChange={(e) => setApiUrl(e.target.value)}
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground-muted focus:text-foreground focus:outline-none focus:border-accent transition-colors font-mono" 
+                  />
+                </div>
+
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <label className="text-sm text-foreground-muted">Temperature</label>
