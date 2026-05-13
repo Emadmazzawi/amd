@@ -32,6 +32,7 @@ function App() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          model: 'vlsi-copilot-v2',
           prompt: prompt,
           temperature: temperature,
           max_tokens: maxTokens
